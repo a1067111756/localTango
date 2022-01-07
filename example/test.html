@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>localTango测试</title>
+</head>
+<body>
+  <script type="module">
+    import LocalTango from '../dist/bundle.es.js'
+    // console.log(LocalTango.createStamp({ a: 100 }, 24 * 60 * 60 * 1000))
+    // LocalTango.storage.encrypt.setItem('key25', LocalTango.createStamp({ a: 100 }, 24 * 60 * 60 * 1000))
+    // LocalTango.setItem('key1', 'my is setItem value')
+    // const res1 = LocalTango.getItem('key1', 'test')
+
+    const res22 = LocalTango.storage.getItem('key2', 'test')
+    console.log(res22)
+
+    // LocalTango.setItemString('key2', 'my is setItemString value')
+    // const res2 = LocalTango.getItemString('key2', 'test')
+    // console.log(res2)
+    // LocalTango.storage.setItemString('key2', 'my is storage setItemString value')
+    // const res22 = LocalTango.storage.getItemString('key2', 'test')
+    // console.log(res22)
+
+    // LocalTango.setItemNumber('key3', 10)
+    // const res3 = LocalTango.getItemNumber('key3', 0)
+    // console.log(res3)
+    // LocalTango.storage.setItemNumber('key3', 12)
+    // const res32 = LocalTango.storage.getItemNumber('key3', 0)
+    // console.log(res32)
+    //
+    // LocalTango.setItemBoolean('key4', true)
+    // const res4 = LocalTango.getItemBoolean('key4', false)
+    // console.log(res4)
+    // LocalTango.storage.setItemBoolean('key4', false)
+    // const res42 = LocalTango.storage.getItemBoolean('key4', true)
+    // console.log(res42)
+    //
+    // LocalTango.setItemJSON('key5', { a: 123, b: '456' })
+    // const res5 = LocalTango.getItemJSON('key5', {})
+    // console.log(res5)
+    // LocalTango.storage.encrypt.setItemJSON('key5', [{a: 147}, {b: 'ssss'}])
+    // const res52 = LocalTango.storage.encrypt.getItemJSON('key5', [])
+    // console.log(res52)
+
+    // LocalTango.storage.encrypt.setItemExpired('k12', [12, 'sss'], 24 * 60 * 60 * 1000)
+    // const res = LocalTango.storage.encrypt.getItemExpired('k12')
+    // console.log(res)
+  </script>
+</body>
+</html>
