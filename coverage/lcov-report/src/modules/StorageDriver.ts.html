@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.85% </span>
+                <span class="strong">82.07% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>87/105</span>
+                <span class='fraction'>87/106</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.48% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>33/41</span>
+                <span class='fraction'>40/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.85% </span>
+                <span class="strong">82.07% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>87/105</span>
+                <span class='fraction'>87/106</span>
             </div>
         
             
@@ -313,7 +313,9 @@
 <a name='L248'></a><a href='#L248'>248</a>
 <a name='L249'></a><a href='#L249'>249</a>
 <a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -380,6 +382,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -630,7 +634,9 @@ export default class StorageDriver implements IStorageDriver {
         ? AES.decrypt(value, encryptKey).toString(EncUtf8)
         : value
     } catch (e) {
-<span class="cstat-no" title="statement not covered" >      throw new Error(`dencrypt content failed, please check your encrypt key is same as dencrypt key`)</span>
+      // throw new Error(`dencrypt content failed, please check your encrypt key is same as dencrypt key`)
+<span class="cstat-no" title="statement not covered" >      console.warn('dencrypt content failed, please check your encrypt key is same as dencrypt key')</span>
+<span class="cstat-no" title="statement not covered" >      return ''</span>
     }
   }
 &nbsp;
@@ -639,12 +645,12 @@ export default class StorageDriver implements IStorageDriver {
     this.dynamicOptions = {}
   }
 &nbsp;
-  // 根据指定key获取记录
-  public getItem(key: string) {
+  // 根据指定key获取记录， 默认值null
+  public getItem(key: string, defaultValue?: any) {
     let resString = this.getDriver().getItem(key)
     if (!resString) {
       this.resetDynamicOptions()
-      return null
+      return defaultValue || null
     }
 &nbsp;
     resString = this.getDencryptContent(resString)
@@ -652,12 +658,12 @@ export default class StorageDriver implements IStorageDriver {
     return resString
   }
 &nbsp;
-  // 根据指定key获取字符串记录， 默认值''
-  public getItemString(key: string, defaultValue = '') {
+  // 根据指定key获取字符串记录， 默认值null
+  public getItemString(key: string, defaultValue?: string) {
     let resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || <span class="branch-1 cbranch-no" title="branch not covered" >null</span>
     }
 &nbsp;
     resString = this.getDencryptContent(resString)
@@ -665,12 +671,12 @@ export default class StorageDriver implements IStorageDriver {
     return resString
   }
 &nbsp;
-  // 根据指定key获取number类型记录， 默认值0
-  public getItemNumber(key: string, defaultValue = 0) {
+  // 根据指定key获取number类型记录， 默认值null
+  public getItemNumber(key: string, defaultValue?: number) {
     const resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || <span class="branch-1 cbranch-no" title="branch not covered" >null</span>
     }
 &nbsp;
     const resNumber = Number(this.getDencryptContent(resString))
@@ -683,12 +689,12 @@ export default class StorageDriver implements IStorageDriver {
     return resNumber
   }
 &nbsp;
-  // 根据指定key获取boolean类型记录， 默认值false
-  public getItemBoolean(key: string, defaultValue = false) {
+  // 根据指定key获取boolean类型记录， 默认值null
+  public getItemBoolean(key: string, defaultValue?: boolean) {
     let resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || null
     }
 &nbsp;
     resString = this.getDencryptContent(resString)
@@ -706,12 +712,12 @@ export default class StorageDriver implements IStorageDriver {
     return Boolean(resString)
   }
 &nbsp;
-  // 根据指定key获取JSON类型记录, 默认值{}
-  public getItemJSON(key: string, defaultValue = {}) {
+  // 根据指定key获取JSON类型记录, 默认值null
+  public getItemJSON(key: string, defaultValue?: Record&lt;any, any&gt; | Array&lt;any&gt;) {
     let resString = this.getDriver().getItem(key)
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || null
     }
 &nbsp;
     resString = this.getDencryptContent(resString)
@@ -725,10 +731,10 @@ export default class StorageDriver implements IStorageDriver {
   }
 &nbsp;
   // 根据指定key获取带时间戳的记录, 默认值null
-  public getItemExpired(key: string, defaultValue = null) {
-    const valueWrapper = this.getItemJSON(key, 'no find value')
-    if (valueWrapper === 'no find value') {
-      return defaultValue
+  public getItemExpired(key: string, defaultValue?: any) {
+    const valueWrapper = this.getItemJSON(key)
+    if (valueWrapper === null) {
+      return defaultValue || null
     }
 &nbsp;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!Object.keys(valueWrapper).includes('expired') || !Object.keys(valueWrapper).includes('data')) {
@@ -742,7 +748,7 @@ export default class StorageDriver implements IStorageDriver {
     const nowStamp = new Date().getTime()
     if (nowStamp &gt; valueWrapper.expired) {
       this.getDriver().removeItem(key)
-      return defaultValue
+      return defaultValue || null
     }
 &nbsp;
     return valueWrapper.data
@@ -820,7 +826,7 @@ export default class StorageDriver implements IStorageDriver {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Jan 07 2022 09:12:24 GMT+0800 (中国标准时间)
+                at Mon Feb 21 2022 17:07:29 GMT+0800 (中国标准时间)
             </div>
         <script src="../../prettify.js"></script>
         <script>

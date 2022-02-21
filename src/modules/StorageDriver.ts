@@ -65,7 +65,9 @@ export default class StorageDriver implements IStorageDriver {
         ? AES.decrypt(value, encryptKey).toString(EncUtf8)
         : value
     } catch (e) {
-      throw new Error(`dencrypt content failed, please check your encrypt key is same as dencrypt key`)
+      // throw new Error(`dencrypt content failed, please check your encrypt key is same as dencrypt key`)
+      console.warn('dencrypt content failed, please check your encrypt key is same as dencrypt key')
+      return ''
     }
   }
 
@@ -74,12 +76,12 @@ export default class StorageDriver implements IStorageDriver {
     this.dynamicOptions = {}
   }
 
-  // 根据指定key获取记录
-  public getItem(key: string) {
+  // 根据指定key获取记录， 默认值null
+  public getItem(key: string, defaultValue?: any) {
     let resString = this.getDriver().getItem(key)
     if (!resString) {
       this.resetDynamicOptions()
-      return null
+      return defaultValue || null
     }
 
     resString = this.getDencryptContent(resString)
@@ -87,12 +89,12 @@ export default class StorageDriver implements IStorageDriver {
     return resString
   }
 
-  // 根据指定key获取字符串记录， 默认值''
-  public getItemString(key: string, defaultValue = '') {
+  // 根据指定key获取字符串记录， 默认值null
+  public getItemString(key: string, defaultValue?: string) {
     let resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || null
     }
 
     resString = this.getDencryptContent(resString)
@@ -100,12 +102,12 @@ export default class StorageDriver implements IStorageDriver {
     return resString
   }
 
-  // 根据指定key获取number类型记录， 默认值0
-  public getItemNumber(key: string, defaultValue = 0) {
+  // 根据指定key获取number类型记录， 默认值null
+  public getItemNumber(key: string, defaultValue?: number) {
     const resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || null
     }
 
     const resNumber = Number(this.getDencryptContent(resString))
@@ -118,12 +120,12 @@ export default class StorageDriver implements IStorageDriver {
     return resNumber
   }
 
-  // 根据指定key获取boolean类型记录， 默认值false
-  public getItemBoolean(key: string, defaultValue = false) {
+  // 根据指定key获取boolean类型记录， 默认值null
+  public getItemBoolean(key: string, defaultValue?: boolean) {
     let resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || null
     }
 
     resString = this.getDencryptContent(resString)
@@ -141,12 +143,12 @@ export default class StorageDriver implements IStorageDriver {
     return Boolean(resString)
   }
 
-  // 根据指定key获取JSON类型记录, 默认值{}
-  public getItemJSON(key: string, defaultValue = {}) {
+  // 根据指定key获取JSON类型记录, 默认值null
+  public getItemJSON(key: string, defaultValue?: Record<any, any> | Array<any>) {
     let resString = this.getDriver().getItem(key)
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue
+      return defaultValue || null
     }
 
     resString = this.getDencryptContent(resString)
@@ -160,10 +162,10 @@ export default class StorageDriver implements IStorageDriver {
   }
 
   // 根据指定key获取带时间戳的记录, 默认值null
-  public getItemExpired(key: string, defaultValue = null) {
-    const valueWrapper = this.getItemJSON(key, 'no find value')
-    if (valueWrapper === 'no find value') {
-      return defaultValue
+  public getItemExpired(key: string, defaultValue?: any) {
+    const valueWrapper = this.getItemJSON(key)
+    if (valueWrapper === null) {
+      return defaultValue || null
     }
 
     if (!Object.keys(valueWrapper).includes('expired') || !Object.keys(valueWrapper).includes('data')) {
@@ -177,7 +179,7 @@ export default class StorageDriver implements IStorageDriver {
     const nowStamp = new Date().getTime()
     if (nowStamp > valueWrapper.expired) {
       this.getDriver().removeItem(key)
-      return defaultValue
+      return defaultValue || null
     }
 
     return valueWrapper.data

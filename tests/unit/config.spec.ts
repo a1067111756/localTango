@@ -1,6 +1,6 @@
 /* 插件 -> 配置测试 */
-import LocalTango from "@/index"
-import { defaultGlobalOptions } from '@/config'
+import LocalTango from "../../src/index"
+import { defaultGlobalOptions } from '../../src/config'
 
 describe('插件 -> 配置测试', () => {
   // 生命周期 - 每个测试进行前
@@ -66,7 +66,9 @@ describe('插件 -> 配置测试', () => {
     const value = 'localTango.config.encryptKey测试Value';
     (LocalTango.encrypt as any).setItem(key, value)
     expect((LocalTango.encrypt as any).getItem(key)).toEqual(value)
+
+    // 修改加解密key，解密失败
     LocalTango.config({ encryptKey: 'config_encryptKey' })
-    expect((LocalTango.encrypt as any).getItem(key)).not.toEqual(value)
+    expect((LocalTango.encrypt as any).getItem(key)).toEqual('')
   });
 })

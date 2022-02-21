@@ -6,7 +6,7 @@ interface LocalTangoConfig {
   driver?: 'localStorage' | 'sessionStorage' | 'session' | 'storage'
 }
 
-// 导出类声明
+// 类声明
 declare class LocalTango {
   public constructor ()
 
@@ -15,11 +15,11 @@ declare class LocalTango {
   public encrypt: LocalTango
   public config (options: LocalTangoConfig): LocalTango
 
-  public getItem (key: string): string | null
-  public getItemString(key: string, defaultValues: string): string
-  public getItemNumber(key: string, defaultValues: number): number
-  public getItemBoolean(key: string, defaultValue: boolean): boolean
-  public getItemJSON (key: string, defaultValue?: Record<any, any> | Array<any>): Record<any, any> | Array<any>
+  public getItem (key: string, defaultValue?: any): any
+  public getItemString(key: string, defaultValue?: string): string | null
+  public getItemNumber(key: string, defaultValue?: number): number | null
+  public getItemBoolean(key: string, defaultValue?: boolean): boolean | null
+  public getItemJSON (key: string, defaultValue?: Record<string, any> | Array<any>): Record<any, any> | Array<any> | null
   public getItemExpired (key: string, defaultValue?: any): any
 
   public setItem (key: string, value: any): void
@@ -30,7 +30,15 @@ declare class LocalTango {
   public setItemExpired (key: string, value: any, expired: number): void
 }
 
+// 导出到全局
+interface Window {
+  localTango: LocalTango
+}
+declare const localTango: LocalTango
+
+// 导出为实例
 declare module "local-tango" {
   let localTango: LocalTango
   export = localTango
 }
+

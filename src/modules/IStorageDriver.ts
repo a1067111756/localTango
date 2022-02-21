@@ -4,16 +4,16 @@ export default interface IStorage {
   getItem (key: string): string | null
 
   // 根据指定key获取字符串记录， 默认值''
-  getItemString (key: string, defaultValue?: string): string
+  getItemString (key: string, defaultValue?: string | null): string | null
 
   // 根据指定key获取number类型记录， 默认值0
-  getItemNumber (key: string, defaultValue?: number): number
+  getItemNumber (key: string, defaultValue?: number | null): number | null
 
   // 根据指定key获取boolean类型记录， 默认值false
-  getItemBoolean (key: string, defaultValue?: boolean): boolean
+  getItemBoolean (key: string, defaultValue?: boolean | null): boolean | null
 
   // 根据指定key获取JSON类型记录, 默认值{}
-  getItemJSON (key: string, defaultValue?: Record<any, any> | Array<any>): Record<any, any> | Array<any>
+  getItemJSON (key: string, defaultValue?: Record<any, any> | Array<any> | null): Record<any, any> | Array<any> | null
 
   // 根据指定key获取时间戳记录
   getItemExpired (key: string, defaultValue?: any): any

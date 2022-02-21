@@ -1,6 +1,6 @@
 /* 插件 -> 基础功能API测试 -> sessionStorage */
-import LocalTango from "@/index"
-import { defaultGlobalOptions } from '@/config'
+import LocalTango from "../../src/index"
+import { defaultGlobalOptions } from '../../src/config'
 
 describe('插件 -> 功能API测试 -> sessionStorage', () => {
   // 生命周期 - 每个测试进行前

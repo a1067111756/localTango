@@ -1,6 +1,6 @@
 {
   "name": "local-tango",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "chengyu",
   "license": "MIT",
   "description": "a easy storage manager tool for browsers",
@@ -29,7 +29,8 @@
     "ts:check": "tsc --noEmit -p ./tsconfig.json",
     "lint:check": "eslint --ext .js,.ts,.vue,.jsx,.tsx src",
     "lint:fix": "eslint --fix --ext .js,.ts,.vue,.jsx,.tsx src",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "test:file": "jest config.spec.ts --verbose"
   },
   "husky": {
     "hooks": {

@@ -1,6 +1,6 @@
 /* 插件 -> 场景测试 */
-import LocalTango from "@/index"
-import { defaultGlobalOptions } from '@/config'
+import LocalTango from "../../src/index"
+import { defaultGlobalOptions } from '../../src/config'
 
 describe('插件 -> 场景测试', () => {
   // 生命周期 - 每个测试进行前

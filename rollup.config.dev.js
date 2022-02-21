@@ -12,25 +12,22 @@ module.exports = {
       // 打包umd格式文件
       file: path.resolve(__dirname, './dist/bundle.umd.js'), // 输出路劲
       format: 'umd', // umd - 统一兼容模式 cjs - commonJs模式 ejs - es6模式
-      name: 'RollupLib', // 对外暴露的顶级变量
-      sourcemap: true, // 开启sorcemap
-      exports: 'auto'
+      name: 'localTango', // 对外暴露的顶级变量
+      sourcemap: true // 开启sorcemap
     },
     {
       // 打包es格式文件
       file: path.resolve(__dirname, './dist/bundle.es.js'), // 输出路劲
       format: 'es', // umd - 统一兼容模式 cjs - commonJs模式 ejs - es6模式
-      name: 'RollupLib', // 对外暴露的顶级变量
-      sourcemap: true, // 开启sorcemap
-      exports: 'auto'
+      name: 'localTango', // 对外暴露的顶级变量
+      sourcemap: true // 开启sorcemap
     },
     {
       // 打包es格式文件
       file: path.resolve(__dirname, './dist/bundle.common.js'), // 输出路劲
       format: 'cjs', // umd - 统一兼容模式 cjs - commonJs模式 es - es6模式
-      name: 'RollupLib', // 对外暴露的顶级变量
-      sourcemap: true, // 开启sorcemap
-      exports: 'auto'
+      name: 'localTango', // 对外暴露的顶级变量
+      sourcemap: true // 开启sorcemap
     }
   ],
   // 插件
