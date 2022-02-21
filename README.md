@@ -31,22 +31,21 @@ $ npm i local-tango
 
 Use in code:
 ```javascript
-import localTango from 'local-tango'
+import 'local-tango'
 localTango.setItem('key', value)
 ```
 
 Best practices:
 ```
 local-tango默认导出的是一个实例对象，不需要new直接可以调用，目的是为了全局只存在一个对象。
-建议在项目初始化时，对插件进行初始化和全局配置，将实例对象挂载到window对象食用更佳。
+建议在项目初始化时，对插件进行初始化和全局配置，实例对象默认已挂载到window对象，可以直接使用。
 
-import localTango from 'local-tango'
+import 'local-tango'
 localTango.config({
   driver: 'localStorage',
   encrypt: false,
   encryptKey: 'local_tango_encrypt_key'
 })
-window.localTango = localTango
 ```
 
 ### 四、插件配置API
@@ -114,10 +113,10 @@ ___
 }
 
 注意: localTango.setItem虽然可以设置任意类型的value, 但是底层会通过String(value)进行数据转换
-在进行存储, 这样实际是和localStorage/sessionStorage的接口保持一致的, 使用者需要注意这个个问题
+在进行存储, 这样实际是和localStorage/sessionStorage的接口保持一致的, 使用者需要注意这个问题
 ```
 
-### `localTango.getItem (key: string): string | null`
+### `localTango.getItem (key: string, defaultValue?: any): string | null`
 根据指定key获取记录
 
 ```typescript
@@ -135,7 +134,7 @@ ___
 }
 ```
 
-### `localTango.getItemString (key: string, defaultValue?: string): string`
+### `localTango.getItemString (key: string, defaultValue?: string): string | null`
 根据指定key获取string类型记录， defaultValue默认值''
 
 ```typescript
@@ -154,7 +153,7 @@ ___
 }
 ```
 
-### `localTango.getItemNumber (key: string, defaultValue?: number): number`
+### `localTango.getItemNumber (key: string, defaultValue?: number): number | null`
 根据指定key获取number类型记录， defaultValue默认值0
 
 ```typescript
@@ -173,7 +172,7 @@ ___
 }
 ```
 
-### `localTango.getItemBoolean (key: string, defaultValue?: boolean): boolean`
+### `localTango.getItemBoolean (key: string, defaultValue?: boolean): boolean | null`
 根据指定key获取boolean类型记录， defaultValue默认值false
 
 ```typescript
@@ -192,7 +191,7 @@ ___
 }
 ```
 
-### `localTango.getItemJSON (key: string, defaultValue?: Record<any, any> | Array<any>): Record<any, any> | Array<any>`
+### `localTango.getItemJSON (key: string, defaultValue?: Record<any, any> | Array<any>): Record<any, any> | Array<any> | null`
 根据指定key获取json形式数据记录, defaultValue默认值{}
 
 ```typescript
@@ -237,7 +236,8 @@ ___
 1. local-tango为什么不导出类而直接导出对象？
 ```
     这个问题思考的点在，我想把这个工具的目标定为了一个全局的工具使用，只需要一次性的初始化配置全局
-    就生效。就像console、localStorage、sessionStorage这样的接口一样全局使用
+    就生效。就像console、localStorage、sessionStorage这样的接口一样全局使用。并且插件内部已经
+    将导出对象挂载到了window上，可以直接调用
 ```
 
 2. 为什么扩展setItemExpired/getItemExpired接口去支持时间戳记录而不是在配置上进行全局支持时间戳记录？
@@ -245,4 +245,10 @@ ___
     这个问题衡量了许久，如果全局支持时间戳，那么底层保存的数据必然是一个时间戳对象，和通常我们使用
     localStorage、sessionStorage存储的数据有别，对于就项目的数据解析就会不兼容。所有我退一步进行
     两个接口的扩展，使用者自行决定是否使用带时间戳去存储数据
+```
+
+3. 如何判断存储中某个key是否有值？ getItemxxx传不传默认值的影响？
+```
+    通过getItemxxx接口获取某个key，存储中没有这个值，如果没有传入defaultValue参数，将会返回null，可以用于判断
+    存储中是否有这个值。如果传入了defaultValue参数，将会返回defaultValue
 ```
