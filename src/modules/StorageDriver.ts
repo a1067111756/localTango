@@ -81,7 +81,7 @@ export default class StorageDriver implements IStorageDriver {
     let resString = this.getDriver().getItem(key)
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     resString = this.getDencryptContent(resString)
@@ -94,7 +94,7 @@ export default class StorageDriver implements IStorageDriver {
     let resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     resString = this.getDencryptContent(resString)
@@ -107,7 +107,7 @@ export default class StorageDriver implements IStorageDriver {
     const resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     const resNumber = Number(this.getDencryptContent(resString))
@@ -125,7 +125,7 @@ export default class StorageDriver implements IStorageDriver {
     let resString = this.getDriver().getItem(key) as string
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     resString = this.getDencryptContent(resString)
@@ -148,7 +148,7 @@ export default class StorageDriver implements IStorageDriver {
     let resString = this.getDriver().getItem(key)
     if (!resString) {
       this.resetDynamicOptions()
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     resString = this.getDencryptContent(resString)
@@ -165,7 +165,7 @@ export default class StorageDriver implements IStorageDriver {
   public getItemExpired(key: string, defaultValue?: any) {
     const valueWrapper = this.getItemJSON(key)
     if (valueWrapper === null) {
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     if (!Object.keys(valueWrapper).includes('expired') || !Object.keys(valueWrapper).includes('data')) {
@@ -179,7 +179,7 @@ export default class StorageDriver implements IStorageDriver {
     const nowStamp = new Date().getTime()
     if (nowStamp > valueWrapper.expired) {
       this.getDriver().removeItem(key)
-      return defaultValue || null
+      return defaultValue ?? null
     }
 
     return valueWrapper.data

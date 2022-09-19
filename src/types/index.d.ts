@@ -26,7 +26,7 @@ declare class LocalTango {
   public setItemString (key: string, value: string): void
   public setItemNumber (key: string, value: number): void
   public setItemBoolean (key: string, value: boolean): void
-  public setItemJSON (key: string, value: JSON): void
+  public setItemJSON (key: string, value: Record<string, any> | Array<any>): void
   public setItemExpired (key: string, value: any, expired: number): void
 }
 

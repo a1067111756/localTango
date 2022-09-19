@@ -1,6 +1,6 @@
 {
   "name": "local-tango",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "author": "chengyu",
   "license": "MIT",
   "description": "a easy storage manager tool for browsers",
