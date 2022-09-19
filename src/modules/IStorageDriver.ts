@@ -35,4 +35,10 @@ export default interface IStorage {
 
   // 根据指定key设置时间戳记录
   setItemExpired (key: string, value: any, expired: number): void
+
+  // 移除指定记录
+  removeItem (key: string): void
+
+  // 清除所有记录
+  clear (): void
 }

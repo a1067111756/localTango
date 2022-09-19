@@ -28,6 +28,9 @@ declare class LocalTango {
   public setItemBoolean (key: string, value: boolean): void
   public setItemJSON (key: string, value: Record<string, any> | Array<any>): void
   public setItemExpired (key: string, value: any, expired: number): void
+
+  public removeItem (key: string): void
+  public clear (): void
 }
 
 // 导出到全局

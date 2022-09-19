@@ -249,4 +249,14 @@ export default class StorageDriver implements IStorageDriver {
 
     this.setItemJSON(key, valueWrapper)
   }
+
+  // 移除指定记录
+  public removeItem(key: string) {
+    this.getDriver().removeItem(key)
+  }
+
+  // 清除所有记录
+  public clear() {
+    this.getDriver().clear()
+  }
 }
