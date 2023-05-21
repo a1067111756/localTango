@@ -7,6 +7,15 @@
 <body>
   <script type="module">
     import '../dist/bundle.min.es.js'
+
+    localTango.config({
+      prefixOfKey: 'test'
+    })
+    localTango.setItem('key1', 'my is setItem value')
+    const res1 = localTango.getItem('key1', 'test')
+    console.log(res1)
+
+
     // console.log(LocalTango.createStamp({ a: 100 }, 24 * 60 * 60 * 1000))
     // LocalTango.storage.encrypt.setItem('key25', LocalTango.createStamp({ a: 100 }, 24 * 60 * 60 * 1000))
     // LocalTango.setItem('key1', 'my is setItem value')

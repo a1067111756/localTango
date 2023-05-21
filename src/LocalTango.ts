@@ -5,8 +5,8 @@
 *    c. 支持存储加密
 *    d. 支持存储过期时间戳
 *  调用形式:
-*    a. 对象调用 - LocalTango.getItem()
-*    b. 链式调用 - LocalTango.storage.encrypt.getItem()
+*    a. 对象调用 - localTango.getItem()
+*    b. 链式调用 - localTango.storage.encrypt.getItem()
 *  逻辑处理:
 *    入口分发(index.ts) --> 数据处理层(modules/StorageDriver.ts) ---> 数据存储层(localStorage/sessionStorage)
 * */

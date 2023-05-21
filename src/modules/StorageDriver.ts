@@ -37,6 +37,11 @@ export default class StorageDriver implements IStorageDriver {
       : this.globalOptions
   }
 
+  // 方法 - 获取真正的key, 即配置了前缀的key
+  private getRealKey (key: string) {
+    return this.globalOptions.prefixOfKey ? `${this.globalOptions.prefixOfKey}_${key}` : key
+  }
+
   // 方法 - 获取使用的driver实例
   private getDriver () {
     const strategy: Record<string, IStorage> = {
@@ -78,7 +83,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key获取记录， 默认值null
   public getItem(key: string, defaultValue?: any) {
-    let resString = this.getDriver().getItem(key)
+    const realKey = this.getRealKey(key)
+    let resString = this.getDriver().getItem(realKey)
     if (!resString) {
       this.resetDynamicOptions()
       return defaultValue ?? null
@@ -91,7 +97,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key获取字符串记录， 默认值null
   public getItemString(key: string, defaultValue?: string) {
-    let resString = this.getDriver().getItem(key) as string
+    const realKey = this.getRealKey(key)
+    let resString = this.getDriver().getItem(realKey) as string
     if (!resString) {
       this.resetDynamicOptions()
       return defaultValue ?? null
@@ -104,7 +111,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key获取number类型记录， 默认值null
   public getItemNumber(key: string, defaultValue?: number) {
-    const resString = this.getDriver().getItem(key) as string
+    const realKey = this.getRealKey(key)
+    const resString = this.getDriver().getItem(realKey) as string
     if (!resString) {
       this.resetDynamicOptions()
       return defaultValue ?? null
@@ -122,7 +130,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key获取boolean类型记录， 默认值null
   public getItemBoolean(key: string, defaultValue?: boolean) {
-    let resString = this.getDriver().getItem(key) as string
+    const realKey = this.getRealKey(key)
+    let resString = this.getDriver().getItem(realKey) as string
     if (!resString) {
       this.resetDynamicOptions()
       return defaultValue ?? null
@@ -145,7 +154,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key获取JSON类型记录, 默认值null
   public getItemJSON(key: string, defaultValue?: Record<any, any> | Array<any>) {
-    let resString = this.getDriver().getItem(key)
+    const realKey = this.getRealKey(key)
+    let resString = this.getDriver().getItem(realKey)
     if (!resString) {
       this.resetDynamicOptions()
       return defaultValue ?? null
@@ -163,7 +173,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key获取带时间戳的记录, 默认值null
   public getItemExpired(key: string, defaultValue?: any) {
-    const valueWrapper = this.getItemJSON(key)
+    const realKey = this.getRealKey(key)
+    const valueWrapper = this.getItemJSON(realKey)
     if (valueWrapper === null) {
       return defaultValue ?? null
     }
@@ -178,7 +189,7 @@ export default class StorageDriver implements IStorageDriver {
 
     const nowStamp = new Date().getTime()
     if (nowStamp > valueWrapper.expired) {
-      this.getDriver().removeItem(key)
+      this.getDriver().removeItem(realKey)
       return defaultValue ?? null
     }
 
@@ -187,7 +198,8 @@ export default class StorageDriver implements IStorageDriver {
 
   // 根据指定key设置记录, 默认将所有类型数据转换为string
   public setItem (key: string, value: any) {
-    this.getDriver().setItem(key, this.getEncryptContent(String(value)))
+    const realKey = this.getRealKey(key)
+    this.getDriver().setItem(realKey, this.getEncryptContent(String(value)))
     this.resetDynamicOptions()
   }
 
@@ -198,7 +210,8 @@ export default class StorageDriver implements IStorageDriver {
       throw new Error(`setItemString only receive a string variable as value, but received: ${value} - ${Object.prototype.toString.call(value)}`)
     }
 
-    this.getDriver().setItem(key, this.getEncryptContent(value))
+    const realKey = this.getRealKey(key)
+    this.getDriver().setItem(realKey, this.getEncryptContent(value))
     this.resetDynamicOptions()
   }
 
@@ -209,7 +222,8 @@ export default class StorageDriver implements IStorageDriver {
       throw new Error(`setItemNumber only receive a number variable as value, but received: ${value} - ${Object.prototype.toString.call(value)}`)
     }
 
-    this.getDriver().setItem(key, this.getEncryptContent(String(value)))
+    const realKey = this.getRealKey(key)
+    this.getDriver().setItem(realKey, this.getEncryptContent(String(value)))
     this.resetDynamicOptions()
   }
 
@@ -220,7 +234,8 @@ export default class StorageDriver implements IStorageDriver {
       throw new Error(`setItemBoolean only receive a boolean variable as value, but received: ${value} - ${Object.prototype.toString.call(value)}`)
     }
 
-    this.getDriver().setItem(key, this.getEncryptContent(String(value)))
+    const realKey = this.getRealKey(key)
+    this.getDriver().setItem(realKey, this.getEncryptContent(String(value)))
     this.resetDynamicOptions()
   }
 
@@ -231,7 +246,8 @@ export default class StorageDriver implements IStorageDriver {
       throw new Error(`setItemJSON only receive a json format data(json、object、array) as value, but received: ${value} - ${Object.prototype.toString.call(value)}`)
     }
 
-    this.getDriver().setItem(key, this.getEncryptContent(JSON.stringify(value)))
+    const realKey = this.getRealKey(key)
+    this.getDriver().setItem(realKey, this.getEncryptContent(JSON.stringify(value)))
     this.resetDynamicOptions()
   }
 
@@ -247,12 +263,14 @@ export default class StorageDriver implements IStorageDriver {
       expired: expired === 0 ? expired : new Date().getTime() + expired
     }
 
-    this.setItemJSON(key, valueWrapper)
+    const realKey = this.getRealKey(key)
+    this.setItemJSON(realKey, valueWrapper)
   }
 
   // 移除指定记录
   public removeItem(key: string) {
-    this.getDriver().removeItem(key)
+    const realKey = this.getRealKey(key)
+    this.getDriver().removeItem(realKey)
   }
 
   // 清除所有记录

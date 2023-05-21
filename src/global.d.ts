@@ -4,5 +4,6 @@
 interface LocalTangoOptions {
   encrypt: boolean,
   encryptKey: string,
-  driver: 'localStorage' | 'sessionStorage' | 'session' | 'storage'
+  driver: 'localStorage' | 'sessionStorage' | 'session' | 'storage',
+  prefixOfKey: string,
 }

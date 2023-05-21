@@ -1,6 +1,6 @@
 {
   "name": "local-tango",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "chengyu",
   "license": "MIT",
   "description": "a easy storage manager tool for browsers",
@@ -12,6 +12,10 @@
       "import": "./dist/bundle.min.es.js",
       "require": "./dist/bundle.min.umd.js"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a1067111756/localTango"
   },
   "files": [
     "dist"

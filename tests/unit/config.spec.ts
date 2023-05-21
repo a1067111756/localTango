@@ -71,4 +71,23 @@ describe('插件 -> 配置测试', () => {
     LocalTango.config({ encryptKey: 'config_encryptKey' })
     expect((LocalTango.encrypt as any).getItem(key)).toEqual('')
   });
+
+  it('config:prefixOfKey测试', async () => {
+    LocalTango.config({ prefixOfKey: 'test' })
+
+    // 全局配置encryptKey选项测试
+    const key = 'prefixOfKey'
+    const value = {
+      a: 'encryptKey选项测试',
+      b: 10
+    };
+
+    // localTango.storage形式调用测试
+    (LocalTango.storage as any).setItemJSON(key, value)
+    expect((LocalTango.storage as any).getItemJSON(key)).toEqual(value);
+
+    // localTango.session形式调用测试
+    (LocalTango.session as any).setItemJSON(key, value)
+    expect((LocalTango.session as any).getItemJSON(key)).toEqual(value)
+  });
 })
