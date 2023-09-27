@@ -58,7 +58,8 @@ ___
 interface LocalTangoConfig {
     encrypt?: boolean,
     encryptKey?: string,
-    driver?: 'localStorage' | 'sessionStorage' | 'session' | 'storage'
+    driver?: 'localStorage' | 'sessionStorage' | 'session' | 'storage',
+    prefixOfKey?: string
 }
 
 // use in code
@@ -68,7 +69,9 @@ localTango.config({
     // 是否加密， 默认是false
     encrypt: false,
     // 加密key, 默认值local_tango_encrypt_key
-    encryptKey: 'local_tango_encrypt_key'
+    encryptKey: 'local_tango_encrypt_key',
+    // 存储key的前缀
+    prefixOfKey: ''
 })
 ```
 
@@ -251,4 +254,20 @@ ___
 ```
     通过getItemxxx接口获取某个key，存储中没有这个值，如果没有传入defaultValue参数，将会返回null，可以用于判断
     存储中是否有这个值。如果传入了defaultValue参数，将会返回defaultValue
+```
+
+4. 全局配置config属性为什么在store、router或其它模块不生效，或者说是第一次不生效？
+```
+    这里存在一个vue插件注册时序问题，如果你的store现在vue中注册，store中有调用local-tango去读取初始值状态。此时就会
+    发生encrypt、prefixOfKey无效的问题。这是因为local-tango的全局配置是在插件注册时候传递到插件中的，store先一步注册
+    就会导致local-tango的全局配置还未获取到进而发生问题。这个问题没有啥好解决的办法，或者说这也不是本插件的问题，算是vue
+    插件注册时序的问题。临时解决方案就是把local-tango的注册提前
+```
+
+### 七、版本更新记录
+```
+  v0.0.8:
+   全局配置项中添加prefixOfKey选项, 添加该功能的目的是为了解决一下两种常见场景。
+     a. 不同项目存储时添加key前缀来区分，不然混用很可能出现意想不到情形出现 
+     b. 调试定位问题时，在开发环境下存储的key与正式环境存储的key分不清，添加前缀能很好的区分不同场景下添加的记录，便于定位问题
 ```

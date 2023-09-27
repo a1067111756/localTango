@@ -1,9 +1,14 @@
 /* 库对外的声明文件 */
 // 配置选项
 interface LocalTangoConfig {
+  // 是否启用加密
   encrypt?: boolean,
+  // 加密key
   encryptKey?: string,
-  driver?: 'localStorage' | 'sessionStorage' | 'session' | 'storage'
+  // 默认使用的存储方式
+  driver?: 'localStorage' | 'sessionStorage' | 'session' | 'storage',
+  // 存储key默认前缀
+  prefixOfKey?: string,
 }
 
 // 类声明

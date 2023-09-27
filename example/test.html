@@ -8,8 +8,16 @@
   <script type="module">
     import '../dist/bundle.min.es.js'
 
-    // console.log(localTango.createStamp({ a: 100 }, 24 * 60 * 60 * 1000))
-    // LocalTango.storage.encrypt.setItem('key25', localTango.createStamp({ a: 100 }, 24 * 60 * 60 * 1000))
+    localTango.config({
+      driver: 'sessionStorage',
+      encrypt: false,
+      prefixOfKey: 'mapbox-preview',
+      encryptKey: 'local_tango_encrypt_key'
+    })
+    localTango.setItemJSON('STORAGE_KEY_MAP_CONFIG', { a: 123 })
+    const res1 = localTango.getItemJSON('STORAGE_KEY_MAP_CONFIG')
+    console.log(res1)
+
     // LocalTango.setItem('key1', 'my is setItem value')
     // const res1 = localTango.getItem('key1', 'test')
 
