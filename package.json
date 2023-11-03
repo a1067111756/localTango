@@ -10,7 +10,8 @@
   "exports": {
     ".": {
       "import": "./dist/bundle.min.es.js",
-      "require": "./dist/bundle.min.umd.js"
+      "require": "./dist/bundle.min.umd.js",
+      "types": "./dist/types/index.d.ts"
     }
   },
   "repository": {
