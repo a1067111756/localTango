@@ -3,6 +3,7 @@ import AES from 'crypto-js/aes'
 import EncUtf8 from 'crypto-js/enc-utf8'
 import LocalStorage from "./localStorage"
 import SessionStorage from "./sessionStorage"
+import LogUtil from './logging'
 import type IStorage from './IStorage'
 import type IStorageDriver from "./IStorageDriver"
 
@@ -28,10 +29,12 @@ export default class StorageDriver implements IStorageDriver {
     this.globalOptions = globalOptions
     this.storageInstance = new LocalStorage()
     this.sessionInstance = new SessionStorage()
+
+    LogUtil.setStorageDriver(this)
   }
 
   // 方法 - 获取使用的config配置
-  private getConfig () {
+  public getConfig () {
     return Object.keys(this.dynamicOptions).length > 0
       ? { ...this.globalOptions, ...this.dynamicOptions }
       : this.globalOptions
@@ -175,24 +178,35 @@ export default class StorageDriver implements IStorageDriver {
   public getItemExpired(key: string, defaultValue?: any) {
     const realKey = this.getRealKey(key)
     const valueWrapper = this.getItemJSON(realKey)
+
+    // 没用找到
     if (valueWrapper === null) {
+      this.resetDynamicOptions()
       return defaultValue ?? null
     }
 
+    // 包裹层结构不对
     if (!Object.keys(valueWrapper).includes('expired') || !Object.keys(valueWrapper).includes('data')) {
+      this.resetDynamicOptions()
       throw new Error(`the search result cannot be converted to itemExpired correctly, result: ${valueWrapper}`)
     }
 
+    // expired为0表示无过期期限
     if (valueWrapper.expired <= 0) {
+      this.resetDynamicOptions()
       return valueWrapper.data
     }
 
+    // 超过期限，删除返回默认值或null
     const nowStamp = new Date().getTime()
     if (nowStamp > valueWrapper.expired) {
       this.getDriver().removeItem(realKey)
+      this.resetDynamicOptions()
       return defaultValue ?? null
     }
 
+    // 正常返回
+    this.resetDynamicOptions()
     return valueWrapper.data
   }
 
@@ -265,16 +279,19 @@ export default class StorageDriver implements IStorageDriver {
 
     const realKey = this.getRealKey(key)
     this.setItemJSON(realKey, valueWrapper)
+    this.resetDynamicOptions()
   }
 
   // 移除指定记录
   public removeItem(key: string) {
     const realKey = this.getRealKey(key)
     this.getDriver().removeItem(realKey)
+    this.resetDynamicOptions()
   }
 
   // 清除所有记录
   public clear() {
     this.getDriver().clear()
+    this.resetDynamicOptions()
   }
 }

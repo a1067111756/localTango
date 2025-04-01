@@ -6,7 +6,7 @@
     // 解析非相对模块名的基准目录
     "baseUrl": "./",
     // 从 tslib 导入辅助工具函数（比如 __extends， __rest等）
-    "importHelpers": true,
+    "importHelpers": false,
     // 决定如何处理模块。
     "moduleResolution": "node",
     // 启用所有严格类型检查选项。

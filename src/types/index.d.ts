@@ -9,6 +9,8 @@ interface LocalTangoConfig {
   driver?: 'localStorage' | 'sessionStorage' | 'session' | 'storage',
   // 存储key默认前缀
   prefixOfKey?: string,
+  // 是否打开日志
+  logging?: boolean | 'simple' | 'full' | { level?: 'simple' | 'full', filter?: string[] }
 }
 
 // 类声明

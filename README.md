@@ -234,6 +234,32 @@ ___
 用在关心记录的过期清除问题
 ```
 
+### `localTango.removeItem (key: string): void`
+根据指定key清除记录。
+
+```typescript
+{
+  localTango.removeItem('key')
+  localTango.storage.removeItem('key')
+  localTango.session.removeItem('key')
+}
+
+注意: 这个完全等同与localStorage.removeItem(), sessionStorage.removeItem()
+```
+
+### `localTango.clear (): void`
+清除所有记录。
+
+```typescript
+{
+  localTango.clear('key')
+  localTango.storage.clear('key')
+  localTango.session.clear('key')
+}
+
+注意: 这个完全等同与localStorage.clear(), sessionStorage.clear()
+```
+
 ### 六、Q&A
 ___
 1. local-tango为什么不导出类而直接导出对象？
@@ -270,4 +296,17 @@ ___
    全局配置项中添加prefixOfKey选项, 添加该功能的目的是为了解决一下两种常见场景。
      a. 不同项目存储时添加key前缀来区分，不然混用很可能出现意想不到情形出现 
      b. 调试定位问题时，在开发环境下存储的key与正式环境存储的key分不清，添加前缀能很好的区分不同场景下添加的记录，便于定位问题
+     
+   v0.1.0:
+   全局配置项中添加logging选项, 便于调试时查找错误
+     a. 不同项目存储时添加key前缀来区分，不然混用很可能出现意想不到情形出现 
+     b. 调试定位问题时，在开发环境下存储的key与正式环境存储的key分不清，添加前缀能很好的区分不同场景下添加的记录，便于定位问题
+         logging: boolean | 'simple' | 'full' | { level?: 'simple' | 'full', filter?: string[] }
+         
+         logging值可以为
+            true - 表示开启简单打印            false - 表示关闭打印
+            'simple' - 表示开启简单打印        'full' - 表示开启全部打印 
+            
+            { level: "simple | full", filter: ['xxxkey', 'xxxxkey'] } - 如果是对象，level表示打开的等级，filter是
+             需要显示打印的操作key，比如你想控制台只打印和STORAGE_KEY_AUTH_TOKEN相关操作，filter: ['STORAGE_KEY_AUTH_TOKEN']
 ```

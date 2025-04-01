@@ -7,5 +7,8 @@ export const defaultGlobalOptions: LocalTangoOptions = {
   // 加密key
   encryptKey: 'local_tango_encrypt_key',
   // 存储key默认前缀
-  prefixOfKey: ''
+  prefixOfKey: '',
+  // 全局日志
+  logging: false
 }
+
